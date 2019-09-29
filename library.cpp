@@ -37,6 +37,7 @@ int main()
             case 1:
             {
                 bool entry = loginScreen(myFile);
+                //If login was success, break out of loop
                 if (entry = true)
                 {
                 active = true;
@@ -181,39 +182,53 @@ bool loginScreen(std::fstream &myFile)
         users.insert(std::pair<std::string, std::string>(Usernames[i], Passwords[i]));
     }
 
-    std::cout << "Hello, please enter username and password: " << std::endl;
-    std::cout << "Username: " << std::endl;
-    std::cin >> username;
-    std::cout << "Password: " << std::endl;
-    std::cin >> password;
-     
-    //Find username
-    auto it = users.find(username);
-    if(it != users.end())
-    {   
-        //Have value of key equal to foundPassword
-        foundPassword = it->second;
-    }
-    else
+    bool userFound = false;
+    do
     {
-        std::cout << "User not found!" << std::endl;
-    }
-
-    int tries = 0;
-    for (tries = 0; tries < 3; ++tries)
-    {
-        if (foundPassword == password)
-        {
-            std::cout << "Welcome!\n";
-            success = true;
-            break;
+        std::cout << "Hello, please enter username: " << std::endl;
+        std::cout << "Username: " << std::endl;
+        std::cin >> username;
+         
+        //Find username
+        auto it = users.find(username);
+        if(it != users.end())
+        {   
+            //Have value of key equal to foundPassword
+            foundPassword = it->second;
+            userFound = true;
         }
-        std::cout << "Invalid Password!" << std::endl;
-    }
-    if (tries == 3)
-    {
-        exit(0);
-    }
+        else
+        {
+            std::cout << "User not found!" << std::endl;
+        }
+    }while(!userFound);
+    bool lginSuccess = false;
+
+    do
+    { 
+        int tries = 0;
+        for(tries = 1; tries <= 3; tries++)
+        {
+            std::cout << "Password: " << std::endl;
+            std::cin >> password;
+            if (foundPassword == password)
+            {
+                std::cout << "Welcome!\n";
+                success = true;
+                lginSuccess = true;
+                return 0;
+            }
+            else if (foundPassword != password)
+            {
+            std::cout << remaining << " tries remaining" << std::endl;
+            std::cout << "Invalid Password!" << std::endl;
+            }
+            if(tries == 3)
+            {
+                exit(0);
+            }
+        }
+    }while(!lginSuccess);
 
     myFile.close();
 }
