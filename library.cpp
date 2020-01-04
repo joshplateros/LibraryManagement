@@ -24,11 +24,12 @@ void displayBooks(Book & acc, std::map<std::string, std::string> & m1);
 int main()
 {
     std::fstream myFile;    
-    bool active = false;
-    bool login = false;    
+    bool activeMenuFlag = false;
+    bool loginMenuFlag = false;    
     std::map<std::string,std::string> m1;
     Book acc;
-    
+   
+   // Logging in	
     do
     {
     int loginChoice = loginMenu();
@@ -40,7 +41,7 @@ int main()
                 //If login was success, break out of loop
                 if (entry = true)
                 {
-                active = true;
+                loginMenuFlag = true; //Continue to main screen
                 }
                 break;
             }
@@ -51,7 +52,7 @@ int main()
             }
             case 3:
             {
-                active = true;
+				std::cout << "Now exiting.." << std::endl;
                 exit(1);
             }
             default:
@@ -60,8 +61,9 @@ int main()
                 break;
             }
         }
-    }while(!active);
+    }while(!loginMenuFlag);
 
+	//After logging in
         do
         {
         int menuOption = menu();
@@ -81,7 +83,7 @@ int main()
             }
             case 5:
             {
-                active = true;
+                activeMenuFlag = true;
                 break;
             }
             default:
@@ -90,7 +92,7 @@ int main()
                 break;
             }
         }
-    } while (!active);
+    } while (!activeMenuFlag);
     return 0;
     //Should we use vectors?
     //std::cout << acc.getTitle();
@@ -220,7 +222,7 @@ bool loginScreen(std::fstream &myFile)
             }
             else if (foundPassword != password)
             {
-            std::cout << remaining << " tries remaining" << std::endl;
+            std::cout << tries << " tries remaining" << std::endl;
             std::cout << "Invalid Password!" << std::endl;
             }
             if(tries == 3)
@@ -249,7 +251,7 @@ void createUser(std::fstream & myFile)
     std::cin >> password;
     std::cout << std::endl;
     
-    myFile << username << password << std::endl;
+    myFile << username << " " << password << std::endl;
 
     myFile.close(); 
 
