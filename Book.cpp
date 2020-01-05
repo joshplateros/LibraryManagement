@@ -4,14 +4,8 @@
 
 bool Book::addBook(const std::string & aTitle, const std::string & theAuthor)
 {
-   // Book *newPtr = new Book;
-   // std::cout << "Book added!" << " - " << aTitle << " by " << theAuthor;
     setTitle(aTitle);
     setAuthor(theAuthor);
-   // newPtr->m_title = "Test";
-   // newPtr->setAuthor(theAuthor);
-
-   // std::cout << "Added - " << getTitle() << " by " << getAuthor() << std::endl;
 
     return true;
 }
