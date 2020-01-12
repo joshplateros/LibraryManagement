@@ -1,6 +1,9 @@
 #ifndef BOOK_H
 #define BOOK_H
 #include <string>
+#include <vector>
+#include <fstream>
+#include <sstream>
 
 //Overloaded << constructor? Probably
 
@@ -11,6 +14,8 @@ class Book
     std::string getAuthor() const;
     void setTitle(const std::string & aTitle);
     void setAuthor(const std::string & theAuthor);
+	void readOutBooks();
+	void load(std::fstream & myFile);
     bool addBook(const std::string & aTitle, const std::string & theAuthor);
     Book(){}
     Book(const std::string & aTitle, const std::string & theAuthor) : m_title(aTitle), m_author(theAuthor)
@@ -25,6 +30,7 @@ class Book
     private:
     std::string m_title;
     std::string m_author;
+	std::vector<std::string> bookAuthor;
     int m_BIN;    
 
 };

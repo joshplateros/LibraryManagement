@@ -2,11 +2,10 @@
 #include <map>
 #include <string>
 #include <iterator>
-#include <vector>
-#include <sstream>
-#include "linkedlist.h" //Might not need
 #include "Book.h"
 #include <fstream>
+#include <sstream>
+#include <vector>
 
 /* TODO: Read in book file to accept. <-- Look at create users, most likely use CSV.
 
@@ -25,13 +24,15 @@ int menu();
 
 //Book functions
 bool addBook(Book & acc, std::map<std::string, std::string> & m1, std::fstream & myFile);
-void displayBooks(Book & acc, std::map<std::string, std::string> & m1);
+void displayBooks(Book & acc, std::map<std::string, std::string> & m1, std::fstream & myFile);
 void readInBooks(std::fstream & myFile, std::map<std::string, std::string> & m1);
 //bool addStudent(Student & acc);
 
 int main()
 {
     std::fstream myFile;    
+	std::fstream testFile("BooksInventory.csv");
+
     bool activeMenuFlag = false;
     bool loginMenuFlag = false;    
     std::map<std::string,std::string> m1;
@@ -86,8 +87,9 @@ int main()
             case 2:
             {
                 std::cout << "Displaying books..." << std::endl;
-//                displayBooks(acc, m1);
-				readInBooks(myFile, m1);
+    //            displayBooks(acc, m1, myFile);
+				acc.load(testFile);
+				acc.readOutBooks();
                 break;
             }
             case 5:
@@ -157,32 +159,51 @@ bool addBook(Book & acc,std::map<std::string, std::string> & m1, std::fstream & 
 	myFile.close();
 
 }
-void displayBooks(Book & acc, std::map<std::string, std::string> & m1)
+void displayBooks(Book & acc, std::map<std::string, std::string> & m1, std::fstream & myFile)
 {
 	//Use readInBooks first to populate map
     std::cout << "Display Book Function" << std::endl;
     std::map<std::string, std::string>::iterator itr;
 
-    if (m1.empty())
-    {
-        std::cout << "Empty!" << std::endl;
-    }
-    else
-    {
-        for (itr = m1.begin(); itr != m1.end(); ++itr)
-        {
-            std::cout << itr->first << " - ";
-            std::cout << itr->second << std::endl;
-        }
-    }
+    //if (m1.empty())
+    //{
+    //    std::cout << "Empty!" << std::endl;
+    //}
+    //else
+    //{
+    //    for (itr = m1.begin(); itr != m1.end(); ++itr)
+    //    {
+    //        std::cout << itr->first << " - ";
+    //        std::cout << itr->second << std::endl;
+    //    }
+   // }
 
-	std::string Titles[CAPACITY];
-	std::string Authors[CAPACITY];
+	std::vector<std::string> bookAuthor;
+	std::string line, word;
+	std::stringstream lineStream;
+
+	int row = 0;
+
+	myFile.open("BooksInventory.csv");
+
+	while (std::getline(myFile, line))
+	{
+		lineStream.clear();
+		lineStream.str(line);
+
+		bookAuthor.push_back(lineStream.str());
+
+		//Implement later to have books in one vector and author in another
+
+		//while (std::getline(lineStream, word, ',' ))
+		//{
+		//	book.push_back(word);
+		//}
+		std::cout << "Test 1: " << bookAuthor[0] << std::endl;
+	}
 
 
-//	myFile.open("BooksInventory.csv", std::ios::in);
-	//myFile
-    
+	myFile.close();
 }
 
 //Use this when existing user is logging in
@@ -233,8 +254,8 @@ bool loginScreen(std::fstream &myFile)
 
     do
     { 
-        int tries = 0;
-        for(tries = 1; tries <= 3; tries++)
+        int tries = 2;
+        for(tries; tries >= 0; tries--)
         {
             std::cout << "Password: " << std::endl;
             std::cin >> password;
@@ -250,7 +271,7 @@ bool loginScreen(std::fstream &myFile)
             std::cout << tries << " tries remaining" << std::endl;
             std::cout << "Invalid Password!" << std::endl;
             }
-            if(tries == 3)
+            if(tries == 0)
             {
                 exit(0);
             }
@@ -283,35 +304,8 @@ void createUser(std::fstream & myFile)
 }
 void readInBooks(std::fstream & myFile, std::map<std::string, std::string> & m1)
 {
-
-		
 	//Read in CSV file, store into m1 (map)
-	myFile.open("BooksInventory.csv", std::ios::in | std::ios::app); //ios::app is append to file
-
-	//Best to store in a map
-
-	std::vector<std::string> row;
-	std::string temp;	
-	std::string line;
-	std::string word;
-	int i = 0;
-
-	while (myFile >> temp)
-	{
-
-		getline(myFile, line);	
-		std::stringstream s(line);
-
-		while (getline(s, word, ','))
-		{
-			row.push_back(word);
-			i++;
-		}
-	    for (int j = 0; j < i; j++)
-	    {	
-		std::cout << row[j] << std::endl;
-		}
-	}
+	myFile.open("BooksInventory.csv", std::ios::out | std::ios::app); //ios::app is append to file
 
 
 	myFile.close();
