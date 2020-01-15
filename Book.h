@@ -16,15 +16,9 @@ class Book
     void setTitle(const std::string & aTitle);
     void setAuthor(const std::string & theAuthor);
 	void readOutBooks();
-	void loadInitial(std::fstream & booksFile);
-	void loadNext(std::fstream & booksFile);
 	bool addBook(const std::string & aTitle, const std::string & theAuthor);
 	void pushOntoVector(std::stringstream & s);
-	void updateVectorSize();
-	void updateBookCounter();
-	void setVectorSize();
 	void clearVector();
-	void sayLastBook();
 
 	int getVectorSize();
     Book(){}
