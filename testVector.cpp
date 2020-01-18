@@ -1,76 +1,52 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <sstream>
 
 int menuChoice();
 
-class theVector
-{
-	public: 
-		void addToVector()
-		{
-			int userInput;
-
-			std::cout << "Enter number to add: ";
-			std::cin >> userInput;
-
-			theVector.push_back(userInput);
-
-		}
-
-		void displayVector()
-		{
-			for (int i = 0; i < theVector.size(); i++)
-			{
-				std::cout << theVector[i] << " ";
-			}
-			std::cout << std::endl;
-		}
-	private: 
-		std::vector<int> theVector;
-
-
-};
 int main()
 {
-	theVector access;
+	std::fstream file("testFile.csv");
 
-	bool flag = false;
+	std::vector<std::string> authors;
+	std::vector<std::string> books;
+	std::vector<std::string> avail;
 
-	do
-	{	
-	int userChoice = menuChoice();
-		switch(userChoice)
+	std::string line, word;
+	std::getline(file,line);
+
+	std::stringstream lineStream(line);
+		while (std::getline(lineStream, word, '|'))
 		{
-			case 1:
+			books.push_back(word);
+			std::stringstream elementStream(word);
+			std::string element;
+			lineStream.clear();
+			while (std::getline(lineStream, element, ';'))
 			{
-				access.addToVector();
-				break;
+				authors.push_back(element);
+				std::string number;
+				lineStream.clear();
+				std::stringstream numberStream(element);
+				while (std::getline(lineStream, number))
+				{
+					avail.push_back(number);
+					lineStream.clear();
+				}
 			}
-			case 2:
-			{
-				access.displayVector();
-				break;
-			}
-			case 3:
-			{
-				exit(1);
-			}
-
 		}
-	} while(!flag);
+
+	for (int i = 0; i < books.size(); i++)
+	{
+//		std::cout << books[i] << std::endl;
+	}
+
+	std::cout << books[0] << std::endl;
+	std::cout << authors[0] << std::endl;
+	std::cout << avail[0] << std::endl;
+
+	file.close();
 }
 
-int menuChoice()
-{
-	
-	int userChoice = 0;
 
-	std::cout << "1) Add number" << std::endl;
-	std::cout << "2) Displayer numbers" << std::endl;
-	std::cout << "3) Exit " << std::endl;
-
-	std::cin >> userChoice;
-
-	return userChoice;
-
-}

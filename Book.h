@@ -11,14 +11,19 @@
 class Book
 {
     public:
-    std::string getTitle() const;
-    std::string getAuthor() const;
+    std::string getTitle();
+    std::string getAuthor();
     void setTitle(const std::string & aTitle);
     void setAuthor(const std::string & theAuthor);
 	void readOutBooks();
 	bool addBook(const std::string & aTitle, const std::string & theAuthor);
 	void pushOntoVector(std::stringstream & s);
 	void clearVector();
+	void removeSpaces(std::string & str);
+
+	std::vector<std::string> fullBooks;
+	std::vector<std::string> fullAuthors;
+	std::vector<int> fullAvail;
 
 	int getVectorSize();
     Book(){}
@@ -34,8 +39,9 @@ class Book
     private:
     std::string m_title;
     std::string m_author;
-	std::vector<std::string> bookAuthor;
-    int m_BIN;    
+	std::vector<std::string> bookAuthor; //Delete
+	//std::vector<std::string> fullBIN;
+    int m_BIN;    //Similar to ASIN, implement later
 	int vectorSize;
 
 };

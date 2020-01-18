@@ -26,6 +26,9 @@ int menu();
 bool addBook(Book & acc, std::map<std::string, std::string> & m1, std::fstream & myFile);
 void loadBooks(Book & acc, std::fstream & booksFile);
 
+//Helper functions
+std::string addSpaces(std::string & str);
+
 int main()
 {
     std::fstream myFile;    
@@ -152,12 +155,12 @@ bool addBook(Book & acc,std::map<std::string, std::string> & m1, std::fstream & 
 
 	std::cout << "Inserting... " << acc.getTitle() << " by " << acc.getAuthor() << std::endl;
 
-    m1.insert(std::pair<std::string, std::string>(acc.getTitle(), acc.getAuthor()));
+    m1.insert(std::pair<std::string, std::string>(acc.getTitle(), acc.getAuthor())); //Not need?
    
   	//Write book information to file
 
 
-    myFile << acc.getTitle() << "," << acc.getAuthor() << std::endl;
+    myFile << acc.getTitle() << " " << acc.getAuthor() << std::endl;
 
 //	acc.updateBookCounter();
 //	acc.bookAuthor.push_back(
@@ -264,7 +267,7 @@ void createUser(std::fstream & loginsFile)
 
 }
 
-void loadBooks(Book & acc, std::fstream & booksFile)
+void loadBooksv2(Book & acc, std::fstream & booksFile)
 {
 	booksFile.open("BooksInventory.csv");
 	std::string line, word;
@@ -276,9 +279,61 @@ void loadBooks(Book & acc, std::fstream & booksFile)
 		lineStream.str(line);
 
 		std::cout << "Pushing" << std::endl;
-		acc.pushOntoVector(lineStream);
+	//	acc.pushOntoVector(lineStream);
 	}
 	std::cout << "Vector size is " << acc.getVectorSize();
 
 	booksFile.close();
 }
+
+void loadBooks(Book & acc, std::fstream & booksFile)
+{
+	booksFile.open("BooksInventory.csv");
+
+	
+	std::string Book[CAPACITY];
+	std::string Authors[CAPACITY];
+	int Avail[CAPACITY];
+
+	int size = 0;
+
+	int i = 0;
+
+	while(!booksFile.eof())
+	{
+		booksFile >> Book[i] >> Authors[i] >> Avail[i];
+		i++;
+		size++;
+	}
+
+	for (int i = 0; i < size - 1; ++i)
+	{
+		acc.fullBooks.push_back(addSpaces(Book[i]));
+		acc.fullAuthors.push_back(addSpaces(Authors[i]));
+		acc.fullAvail.push_back(Avail[i]);
+	}
+
+}
+
+std::string addSpaces(std::string & str)
+{
+	int size = str.size();
+
+	int j = 0;
+
+	for (int i = 1; i < str.size(); i++)
+	{
+		if (isupper(str[i]))
+		{
+			str.insert(i++, " ");
+		}
+
+		if (isdigit(str[i]))
+		{
+			str.insert(i++, " ");
+		}
+	}
+
+	return str;
+}
+

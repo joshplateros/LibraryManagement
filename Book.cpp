@@ -21,23 +21,24 @@ void Book::setAuthor(const std::string & theAuthor)
 {
     m_author = theAuthor;
 } 
-std::string Book::getTitle() const
+std::string Book::getTitle()
 {
+	removeSpaces(m_title);
     return m_title;
 }
 
-std::string Book::getAuthor() const
+std::string Book::getAuthor()
 {
+	removeSpaces(m_author);
     return m_author;
 }
 
 void Book::readOutBooks()
 {
 	//std::cout << "Book Counter is " << bookCounter << std::endl;
-	for (int i = 0; i < bookAuthor.size();i++)
+	for (int i = 0; i < fullBooks.size();i++)
 	{
-		std::cout << "I is : " << i << " ";
-		std::cout << bookAuthor[i] << std::endl;
+		std::cout << fullBooks[i] << " by " << fullAuthors[i] << std::endl;
 	}
 			//resize vector in addBook?
 }
@@ -52,7 +53,17 @@ void Book::clearVector()
 	bookAuthor.clear();
 }
 
-void Book::pushOntoVector(std::stringstream & s)
+void Book::removeSpaces(std::string & str)
 {
-	bookAuthor.push_back(s.str());
+	int count = 0;
+
+	for (int i = 0; str[i]; i++)
+	{
+		if (str[i] != ' ')
+		{
+			str[count++] = str[i];
+		}
+	}
+
+	str[count] = '\0';
 }
