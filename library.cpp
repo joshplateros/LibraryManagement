@@ -4,8 +4,8 @@
 #include <iterator>
 #include "Book.h"
 #include <fstream>
-#include <sstream>
 #include <vector>
+#include <algorithm> //Remove spaces
 
 /* TODO: Read in book file to accept. <-- Look at create users, most likely use CSV.
 
@@ -28,6 +28,7 @@ void loadBooks(Book & acc, std::fstream & booksFile);
 
 //Helper functions
 std::string addSpaces(std::string & str);
+void removeSpaces(std::string & str);
 
 int main()
 {
@@ -35,6 +36,7 @@ int main()
 	std::fstream loginsFile("Logins.txt");
 	std::fstream booksFile("BooksInventory.csv");
 
+	bool loadBooksFlag = true;
     bool activeMenuFlag = false;
     bool loginMenuFlag = false;    
     std::map<std::string,std::string> m1;
@@ -87,9 +89,10 @@ int main()
             }
             case 2:
             {
-                std::cout << "Displaying Books..." << std::endl;
-				loadBooks(acc, myFile);
-				acc.readOutBooks();
+				std::cout << "Displaying Books..." << std::endl;
+				loadBooks(acc, booksFile);
+				acc.readOutBooks();	
+
 				break;
 			}
             case 5:
@@ -140,9 +143,11 @@ bool addBook(Book & acc,std::map<std::string, std::string> & m1, std::fstream & 
 
 
 	myFile.open("BooksInventory.csv", std::ios::out | std::ios::app);
-    //Optimize later?
 
-	acc.clearVector();
+
+	acc.fullBooks.clear();
+	acc.fullAuthors.clear();
+	acc.fullAvail.clear();
 
     std::cout << "Please enter title" << std::endl;
     std::cin.ignore();
@@ -151,20 +156,22 @@ bool addBook(Book & acc,std::map<std::string, std::string> & m1, std::fstream & 
     std::cout << "Please enter author" << std::endl;
     std::getline(std::cin,author);
 
+	removeSpaces(title);
+	removeSpaces(author);
+
     acc.addBook(title, author);
 
-	std::cout << "Inserting... " << acc.getTitle() << " by " << acc.getAuthor() << std::endl;
 
-    m1.insert(std::pair<std::string, std::string>(acc.getTitle(), acc.getAuthor())); //Not need?
+
+//	std::cout << "Inserting... " << acc.getTitle() << " by " << acc.getAuthor() << std::endl;
+
+//    m1.insert(std::pair<std::string, std::string>(acc.getTitle(), acc.getAuthor())); //Not need?
    
   	//Write book information to file
 
+    myFile << acc.getTitle() << " " << acc.getAuthor() << " " << 1 << std::endl;
 
-    myFile << acc.getTitle() << " " << acc.getAuthor() << std::endl;
 
-//	acc.updateBookCounter();
-//	acc.bookAuthor.push_back(
-//	acc.loadNext(myFile);
 
 	myFile.close();
 
@@ -288,8 +295,6 @@ void loadBooksv2(Book & acc, std::fstream & booksFile)
 
 void loadBooks(Book & acc, std::fstream & booksFile)
 {
-	booksFile.open("BooksInventory.csv");
-
 	
 	std::string Book[CAPACITY];
 	std::string Authors[CAPACITY];
@@ -304,9 +309,11 @@ void loadBooks(Book & acc, std::fstream & booksFile)
 		booksFile >> Book[i] >> Authors[i] >> Avail[i];
 		i++;
 		size++;
+		acc.bookCounter++;
 	}
-
-	for (int i = 0; i < size - 1; ++i)
+	
+	std::cout << "Stage 2" << std::endl;
+	for (int i = 0; i < size; ++i)
 	{
 		acc.fullBooks.push_back(addSpaces(Book[i]));
 		acc.fullAuthors.push_back(addSpaces(Authors[i]));
@@ -337,3 +344,8 @@ std::string addSpaces(std::string & str)
 	return str;
 }
 
+void removeSpaces(std::string & str)
+{
+	std::string::iterator end_pos = std::remove(str.begin(), str.end(), ' ');
+	str.erase(end_pos, str.end());
+}

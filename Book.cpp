@@ -23,20 +23,18 @@ void Book::setAuthor(const std::string & theAuthor)
 } 
 std::string Book::getTitle()
 {
-	removeSpaces(m_title);
     return m_title;
 }
 
 std::string Book::getAuthor()
 {
-	removeSpaces(m_author);
     return m_author;
 }
 
 void Book::readOutBooks()
 {
 	//std::cout << "Book Counter is " << bookCounter << std::endl;
-	for (int i = 0; i < fullBooks.size();i++)
+	for (int i = 0; i < bookCounter - 1;i++)
 	{
 		std::cout << fullBooks[i] << " by " << fullAuthors[i] << std::endl;
 	}
