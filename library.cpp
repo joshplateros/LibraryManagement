@@ -295,7 +295,7 @@ void loadBooksv2(Book & acc, std::fstream & booksFile)
 
 void loadBooks(Book & acc, std::fstream & booksFile)
 {
-	
+
 	std::string Book[CAPACITY];
 	std::string Authors[CAPACITY];
 	int Avail[CAPACITY];
@@ -303,6 +303,11 @@ void loadBooks(Book & acc, std::fstream & booksFile)
 	int size = 0;
 
 	int i = 0;
+
+	//Used to stop appending when pushing to vector
+	acc.fullBooks.clear();
+	acc.fullAuthors.clear();
+	acc.fullAvail.clear();
 
 	while(!booksFile.eof())
 	{
@@ -312,7 +317,10 @@ void loadBooks(Book & acc, std::fstream & booksFile)
 		acc.bookCounter++;
 	}
 	
-	std::cout << "Stage 2" << std::endl;
+	//Used to reset eof flag
+	booksFile.clear();
+	booksFile.seekg(0, std::ios::beg);
+	
 	for (int i = 0; i < size; ++i)
 	{
 		acc.fullBooks.push_back(addSpaces(Book[i]));

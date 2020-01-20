@@ -34,7 +34,7 @@ std::string Book::getAuthor()
 void Book::readOutBooks()
 {
 	//std::cout << "Book Counter is " << bookCounter << std::endl;
-	for (int i = 0; i < bookCounter - 1;i++)
+	for (int i = 0; i < fullBooks.size() - 1;i++)
 	{
 		std::cout << fullBooks[i] << " by " << fullAuthors[i] << std::endl;
 	}
