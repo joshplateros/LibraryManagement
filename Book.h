@@ -16,16 +16,19 @@ class Book
     void setTitle(const std::string & aTitle);
     void setAuthor(const std::string & theAuthor);
 	void readOutBooks();
-	bool addBook(const std::string & aTitle, const std::string & theAuthor);
+	bool setBook(const std::string & aTitle, const std::string & theAuthor);
+	void addBook(std::map<std::string, std::string> & m1, std::fstream & myFile);
+	void loadBooks(std::fstream & booksFile);
 	void pushOntoVector(std::stringstream & s);
-	void clearVector();
+
+	//Helper
+	std::string addSpaces(std::string & str);
 	void removeSpaces(std::string & str);
 
 	std::vector<std::string> fullBooks;
 	std::vector<std::string> fullAuthors;
 	std::vector<int> fullAvail;
 
-	int getVectorSize();
     Book(){}
     Book(const std::string & aTitle, const std::string & theAuthor) : m_title(aTitle), m_author(theAuthor)
     {}
@@ -43,6 +46,7 @@ class Book
 	//std::vector<std::string> fullBIN;
     int m_BIN;    //Similar to ASIN, implement later
 	int vectorSize;
+	size_t MAX = 100;
 
 };
 

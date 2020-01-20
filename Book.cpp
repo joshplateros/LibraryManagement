@@ -4,8 +4,9 @@
 #include <sstream>
 #include <vector>
 #include <iterator>
+#include <algorithm>
 
-bool Book::addBook(const std::string & aTitle, const std::string & theAuthor)
+bool Book::setBook(const std::string & aTitle, const std::string & theAuthor)
 {
     setTitle(aTitle);
     setAuthor(theAuthor);
@@ -41,27 +42,91 @@ void Book::readOutBooks()
 			//resize vector in addBook?
 }
 
-int Book::getVectorSize()
-{
-	return bookAuthor.size();
-}
-
-void Book::clearVector()
-{
-	bookAuthor.clear();
-}
-
 void Book::removeSpaces(std::string & str)
 {
-	int count = 0;
+	std::string::iterator end_pos = std::remove(str.begin(), str.end(), ' ');
+	str.erase(end_pos, str.end());
+}
 
-	for (int i = 0; str[i]; i++)
+void Book::loadBooks(std::fstream & booksFile)
+{
+	std::string Book[MAX];
+	std::string Authors[MAX];
+	int Avail[MAX];
+
+	int size = 0;
+
+	int i = 0;
+
+	fullBooks.clear();
+	fullAuthors.clear();
+	fullAvail.clear();
+
+	while (!booksFile.eof())
 	{
-		if (str[i] != ' ')
-		{
-			str[count++] = str[i];
-		}
+		booksFile >> Book[i] >> Authors[i] >> Avail[i];
+		i++;
+		size++;
+		bookCounter++; //Might not use
 	}
 
-	str[count] = '\0';
+	booksFile.clear();
+	booksFile.seekg(0, std::ios::beg);
+
+	for (int i = 0; i < size; ++i)
+	{
+		fullBooks.push_back(addSpaces(Book[i]));
+		fullAuthors.push_back(addSpaces(Authors[i]));
+		fullAvail.push_back(Avail[i]);
+	}
+}
+
+void Book::addBook(std::map<std::string, std::string> & m1, std::fstream & myFile)
+{
+	std::string title;
+	std::string author;
+
+	myFile.open("BooksInventory.csv", std::ios::out | std::ios::app);
+
+	fullBooks.clear();
+	fullAuthors.clear();
+	fullAvail.clear();
+
+	std::cout << "Please enter title" << std::endl;
+	std::cin.ignore();
+	std::getline(std::cin, title);
+
+	std::cout << "Please enter author" << std::endl;
+	std::getline(std::cin, author);
+
+	removeSpaces(title);
+	removeSpaces(author);
+
+	setBook(title, author);
+
+	myFile << getTitle() << " " << getAuthor() << " " << 1 << std::endl;
+
+	myFile.close();
+
+}
+
+std::string Book::addSpaces(std::string & str)
+{
+	int size = str.size();
+
+	int j = 0;
+
+	for (int i = 1; i < str.size(); i++)
+	{
+		if (isupper(str[i]))
+		{
+			str.insert(i++, " ");
+		}
+
+		if (isdigit(str[i]))
+		{
+			str.insert(i++, " ");
+		}
+	}
+	return str;
 }
