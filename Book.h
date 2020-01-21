@@ -21,12 +21,20 @@ class Book
 	void loadBooks(std::fstream & booksFile);
 	void pushOntoVector(std::stringstream & s);
 
+	std::string getGenre(int type); //Type is Fiction or Nonfiction
+	int displayFictionGenres();
+	int displayNFictionGenres();
+
 	//Helper
 	std::string addSpaces(std::string & str);
 	void removeSpaces(std::string & str);
+	std::string toString(int x);
 
 	std::vector<std::string> fullBooks;
 	std::vector<std::string> fullAuthors;
+	std::vector<char> fullType;
+	std::vector<std::string> fullGenre;
+	std::vector<int> fullBIN;
 	std::vector<int> fullAvail;
 
     Book(){}
@@ -44,7 +52,6 @@ class Book
     std::string m_author;
 	std::vector<std::string> bookAuthor; //Delete
 	//std::vector<std::string> fullBIN;
-    int m_BIN;    //Similar to ASIN, implement later
 	int vectorSize;
 	size_t MAX = 100;
 

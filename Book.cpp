@@ -37,7 +37,7 @@ void Book::readOutBooks()
 	//std::cout << "Book Counter is " << bookCounter << std::endl;
 	for (int i = 0; i < fullBooks.size() - 1;i++)
 	{
-		std::cout << fullBooks[i] << " by " << fullAuthors[i] << std::endl;
+		std::cout << fullBooks[i] << " by " << fullAuthors[i] << " - " << toString(fullAvail[i]) << std::endl << std::endl;
 	}
 			//resize vector in addBook?
 }
@@ -104,6 +104,18 @@ void Book::addBook(std::map<std::string, std::string> & m1, std::fstream & myFil
 
 	setBook(title, author);
 
+	std::cout << "Please select type" << std::endl;
+	std::cout << "1) Fiction " << std::endl;
+	std::cout << "2) Non-fiction " << std::endl;
+	
+	int type;
+
+	std::cin >> type;
+
+	std::cout << "Please select genre" <<< std::endl;
+
+	getGenre(type); //Select genre based on type, if Other ask for user input
+
 	myFile << getTitle() << " " << getAuthor() << " " << 1 << std::endl;
 
 	myFile.close();
@@ -130,3 +142,79 @@ std::string Book::addSpaces(std::string & str)
 	}
 	return str;
 }
+
+std::string Book::toString(int x)
+{
+	if (x == 1)
+	{
+		return "Available";
+	}
+	else
+	{
+		return "Not Available";
+	}
+}
+
+std::string Book::getGenre(int type)
+{
+	if (type == 1) // Fiction (not real)
+	{
+		int choice = displayFictionGenres();
+		switch(choice)
+		{
+			case 1:
+			{
+				return "genre 1";
+			}
+		}
+	}
+	else if (type == 2) // Non-Fiction
+	{
+		int choice = displayNFictionGenres();
+		switch(choice)
+		{
+			case 1:
+			{
+				return "genre 1";
+			}
+		}
+	}
+}
+
+int displayFictionGenres()
+{
+	int genreSelection;
+
+	std::cout << "1) Action & Adventure" << std::endl;
+	std::cout << "2) Alternate History" << std::endl;
+	std::cout << "3) Anthology" << std::endl;
+	std::cout << "4) Chick Lit" << std::endl;
+	std::cout << "5) Children's" << std::endl;
+	std::cout << "6) Comic Book" << std::endl;
+	std::cout << "7) Coming-of-age" << std::endl;
+	std::cout << "8) Crime" << std::endl;
+	std::cout << "9) Drama" << std::endl;
+	std::cout << "10) Fairytale" << std::endl;
+	//Next page insert? with CLS and back page
+	std::cout << "11) Fantasy" << std::endl;
+	std::cout << "12) Graphic Novel" << std::endl;
+	std::cout << "13) Historical Fiction" << std::endl;
+	std::cout << "14) Horror" << std::endl;
+	std::cout << "15) Mystery" << std::endl;
+	std::cout << "16) Paranormal Romance" << std::endl;
+	std::cout << "17) Picture Book" << std::endl;
+	std::cout << "18) Poetry" << std::endl;
+	std::cout << "19) Satire" << std::endl;
+	std::cout << "20) Science Fiction" << std::endl;
+	//Next page
+	std::cout << "21) Short Story" << std::endl;
+	std::cout << "22) Suspense" << std::endl;
+	std::cout << "23) Thriller" << std::endl;
+	std::cout << "24) Young Adult" << std::endl;
+	std::cout << "25) Other" << std::endl; //Have user input other genre
+	
+	std::cin >> genreSelection;
+
+	return genreSelection;
+}
+
