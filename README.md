@@ -1,3 +1,6 @@
+Update 03/04/20
+Will redo this program and use more objects oriented stuff
+
 A library management system using login system.
 Very simple program.
 
